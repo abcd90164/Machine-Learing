@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
 
-cap = cv2.VideoCapture("rtsp://mltest:1223344556@192.168.1.169:554/stream1")                     # 啟用攝影鏡頭
+# cap = cv2.VideoCapture("rtsp://mltest:1223344556@192.168.1.169:554/stream1")                     # 啟用攝影鏡頭
+cap = cv2.VideoCapture(700)                     # 啟用攝影鏡頭
 print('loading...')
 knn = cv2.ml.KNearest_load('mnist_knn.xml')   # 載入模型
 print('start...')
@@ -43,7 +44,7 @@ while True:
 
     cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),3)  # 標記辨識的區域
     cv2.imshow('oxxostudio', img)
-    if cv2.waitKey(1) == ord('q'):
+    if cv2.waitKey(50) == ord('q'):
         break     # 按下 q 鍵停止
 cap.release()
 cv2.destroyAllWindows()

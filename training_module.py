@@ -16,7 +16,7 @@ x_test = x_test.astype('float32')/255           # 轉換資料型別
 y_test = y_test.astype(np.float32)
 
 knn=cv2.ml.KNearest_create()                    # 建立 KNN 訓練方法
-knn.setDefaultK(5)                              # 參數設定
+knn.setDefaultK(10)                             # 參數設定
 knn.setIsClassifier(True)
 
 print('training...')
