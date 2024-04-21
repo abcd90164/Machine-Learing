@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
 
-# cap = cv2.VideoCapture("rtsp://mltest:1223344556@192.168.1.169:554/stream1")                     # 啟用攝影鏡頭
+RECTANGLE_SIZE = 120
+
 cap = cv2.VideoCapture(700)                     # 啟用攝影鏡頭
 print('loading...')
 knn = cv2.ml.KNearest_load('mnist_knn.xml')   # 載入模型
@@ -14,16 +15,16 @@ while True:
     if not ret:
         print("Cannot receive frame")
         break
-    img = cv2.resize(img,(540,300))          # 改變影像尺寸，加快處理效率
-    x, y, w, h = 400, 200, 60, 60            # 定義擷取數字的區域位置和大小
+    img = cv2.resize(img,(800,500))          # 改變影像尺寸，加快處理效率
+    x, y, w, h = 400, 200, RECTANGLE_SIZE, RECTANGLE_SIZE            # 定義擷取數字的區域位置和大小
     img_num = img.copy()                     # 複製一個影像作為辨識使用
     img_num = img_num[y:y+h, x:x+w]          # 擷取辨識的區域
 
-    img_num = cv2.cvtColor(img_num, cv2.COLOR_BGR2GRAY)    # 顏色轉成灰階
+    img_num = cv2.cvtColor(img_num, cv2.COLOR_BGR2GRAY)             # 顏色轉成灰階
     # 針對白色文字，做二值化黑白轉換，轉成黑底白字
     ret, img_num = cv2.threshold(img_num, 127, 255, cv2.THRESH_BINARY_INV)
-    output = cv2.cvtColor(img_num, cv2.COLOR_GRAY2BGR)     # 顏色轉成彩色
-    img[0:60, 480:540] = output                            # 將轉換後的影像顯示在畫面右上角
+    output = cv2.cvtColor(img_num, cv2.COLOR_GRAY2BGR)              # 顏色轉成彩色
+    img[0:RECTANGLE_SIZE, 480:480 + RECTANGLE_SIZE] = output        # 將轉換後的影像顯示在畫面右上角
 
     img_num = cv2.resize(img_num,(28,28))   # 縮小成 28x28，和訓練模型對照
     img_num = img_num.astype(np.float32)    # 轉換格式
